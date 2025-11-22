@@ -1,21 +1,18 @@
 -module(lab2_unit_tests).
 
 -include_lib("lab2.hrl").
-
 -include_lib("eunit/include/eunit.hrl").
 
 unit_test_() ->
-    [
-        {"New creates empty tree", fun test_new/0},
-        {"lab2:insert creates single element", fun insert_single/0},
-        {"lab2:insert same key increases count", fun insert_duplicate/0},
-        {"lab2:delete reduces count", fun delete_reduce/0},
-        {"lab2:delete removes element", fun delete_remove/0},
-        {"Equals works for same trees", fun equals_same/0},
-        {"Foldl sums correctly", fun foldl/0},
-        {"Filter works", fun filter/0},
-        {"Map transforms correctly", fun map/0}
-    ].
+    [{"New creates empty tree", fun test_new/0},
+     {"lab2:insert creates single element", fun insert_single/0},
+     {"lab2:insert same key increases count", fun insert_duplicate/0},
+     {"lab2:delete reduces count", fun delete_reduce/0},
+     {"lab2:delete removes element", fun delete_remove/0},
+     {"Equals works for same trees", fun equals_same/0},
+     {"Foldl sums correctly", fun foldl/0},
+     {"Filter works", fun filter/0},
+     {"Map transforms correctly", fun map/0}].
 
 test_new() ->
     Empty = lab2:new(),
@@ -68,12 +65,17 @@ map() ->
     maps:get(2, Map) =:= 1,
     maps:get(4, Map) =:= 1.
 
-
 count_values(nil, Acc) ->
     Acc;
-count_values(#rbbag{data = {Count, Value}, left = Left, right = Right}, Acc) ->
-    NewAcc = case Acc of
-        #{Value := OldCount} -> Acc#{Value := OldCount + Count};
-        _ -> Acc#{Value => Count}
-    end,
+count_values(#rbbag{data = {Count, Value},
+                    left = Left,
+                    right = Right},
+             Acc) ->
+    NewAcc =
+        case Acc of
+            #{Value := OldCount} ->
+                Acc#{Value := OldCount + Count};
+            _ ->
+                Acc#{Value => Count}
+        end,
     count_values(Left, count_values(Right, NewAcc)).
